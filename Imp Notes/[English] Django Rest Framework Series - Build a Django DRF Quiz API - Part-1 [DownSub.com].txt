@@ -1,0 +1,3756 @@
+hello and welcome back to another django
+
+drf
+
+project this time is going to be a quiz
+
+project
+
+so we're going to be building a quiz api
+
+essentially here but
+
+really the essence of this tutorial is i
+
+wanted to
+
+show you a little bit more about
+
+serializers so so far really what we've
+
+seen
+
+in at least my tutorials is that to you
+
+to
+
+use a serializer we select the data from
+
+the database that we want and normally
+
+that's from one table
+
+we put it through the serializer and
+
+again we're just using one table so
+
+this really is a showcase or or
+
+taking that one step further and
+
+thinking about multiple
+
+tables so utilizing serializers where
+
+we're collecting data from
+
+multiple tables and this kind of setup
+
+really kind of leans into kind of
+
+demonstrating
+
+some of the other django tools that we
+
+have available
+
+functions that we have available to
+
+actually perform these type of
+
+operations
+
+so we go through the process of building
+
+a simple quiz
+
+api uh we'll go through the process of
+
+developing the models
+
+i'll give you a few different pointers
+
+that i haven't mentioned before about
+
+models and then we'll create some simple
+
+views and serializers
+
+so at the end of this tutorial we have
+
+some end points
+
+so we'll be able to uh from a front end
+
+we'll be able to grab all quizzes from
+
+our api
+
+we'll be able to grab maybe a random
+
+question from a particular topic
+
+and then all questions from a particular
+
+quiz
+
+so this will be a standalone tutorial we
+
+don't have any front end here
+
+we're going to be utilizing postman just
+
+to kind of grab all the data
+
+or the django api view just to grab the
+
+data and show you that the data is being
+
+returned here
+
+and then in the next tutorials we'll
+
+have a look at maybe
+
+then just creating a simple front end to
+
+consume the
+
+endpoints but like i said really the
+
+focus here
+
+is on those handling relational data
+
+particularly foreign key setups
+
+in your serializers okay so i'm going to
+
+try and make this into sections so you
+
+can easily skip ahead
+
+so step one as you might imagine we're
+
+going to need to create a new project so
+
+i'm going to create a new virtual
+
+environment
+
+start a new django project create a new
+
+app called
+
+quiz and then install drf so that's pip
+
+install django rest framework
+
+so by all means do that yourself skip to
+
+the next section otherwise let's go
+
+ahead now
+
+and do this
+
+so i'm using windows so i'm going to go
+
+ahead
+
+and i've already created a new folder
+
+called new quiz
+
+django live not too sure why i'm using
+
+capitals just damn
+
+uh so let's just call this vmv oh what
+
+am i doing
+
+minus m pmv
+
+and we're gonna make a new folder called
+
+vmv which is a new
+
+virtual environment okay so
+
+now that's done let's just activate this
+
+there we go okay so now we can go ahead
+
+and pip install
+
+pip install django so make the django
+
+project
+
+or django framework available so once
+
+that's done
+
+we can now then use the django admin
+
+command of django
+
+admin and then create a start a
+
+a new app and let's call this core and
+
+i'm using the dot so it appears in this
+
+folder and doesn't make a new folder
+
+inside of a folder
+
+oh that's strange
+
+so now we can start a new project so i
+
+just uh cleared that for you so you can
+
+see this so django
+
+admin start project and i'm going to
+
+call that core and use the dot
+
+so that appears in this folder and
+
+doesn't make a new folder inside of a
+
+folder
+
+so go ahead and do that so i've now got
+
+a new folder here called core and
+
+obviously my settings
+
+so now we can create or now we can use
+
+the manage pi file
+
+so py manage file pi manage pi file
+
+and then we can go ahead and uh
+
+start app and we're going to call this
+
+this
+
+app quiz so let's go ahead and do that
+
+so make a new quiz app
+
+and then of course i need to just
+
+register that in the core settings
+
+as per normal
+
+i'm just going to call that quiz so that
+
+just registers the application with
+
+django so when we start migrating tables
+
+etc
+
+it will pick up all the models in the
+
+models table
+
+or the models pi file okay so that's
+
+that
+
+done and we need to
+
+also install drf
+
+so let's go and install that so pip
+
+install remember the pip is the package
+
+manager for python
+
+which allows us access to softwares that
+
+we can install so this is going to be
+
+the django rest framework we're going to
+
+install
+
+now once we've done that what we can do
+
+straight away if you like
+
+is we can make a requirements file
+
+that's going to be handy if we want to
+
+replicate the application so pip
+
+freeze and then the right chevron and
+
+then we're going to call that
+
+require prince.txt you can call it
+
+whatever you like
+
+but we're going to call that
+
+requirements.txt and that's just going
+
+to create
+
+a new file here called requirements with
+
+all the different
+
+dependencies and applications that we
+
+have to create this application or
+
+that's needed to run this application
+
+okay so that's about it really was step
+
+one we've created our new virtual
+
+environment creating a new project we've
+
+installed install drf
+
+okay so probably one last thing that we
+
+need to do
+
+is just to actually include the rest
+
+framework into our application
+
+so let's go ahead and go into the
+
+settings of our core
+
+and then here we're just going to also
+
+now add
+
+the rest framework
+
+so we include that in the applications
+
+and let's just go ahead and do our
+
+initial migrate
+
+why not so let's just go we're going to
+
+apply all the different tables
+
+that django has from the installed apps
+
+that are needed for the application
+
+so that we can set up our admin area and
+
+so on um so that's now
+
+in place so we've migrated the data to a
+
+new database it's right here
+
+now i've got the sqlite
+
+plugin or extension installed in visual
+
+studio code that's going to allow me to
+
+right click
+
+open the database and i can actually
+
+then see inside my database and inspect
+
+the tables and data
+
+so let's just go ahead and create while
+
+we're here
+
+um let's create a a super user
+
+so that we can log into the admin when
+
+we need to
+
+so i've just called it admin and admin
+
+don't need an email address it's not a
+
+mandatory field
+
+and there we go so let's just go ahead
+
+before we move to the next stage just
+
+make things
+
+make sure things are working just do a
+
+run server
+
+and that's going to show us that our
+
+server is now running there's no
+
+problems if there were
+
+we'd probably receive an error right
+
+here
+
+so now we have our project set up let's
+
+go ahead and actually build
+
+our models i was going to take you
+
+through the process of normalization
+
+but because i'm focusing particularly
+
+here on foreign keys
+
+i've gone for a model uh built around
+
+foreign keys essentially here so let's
+
+go ahead and
+
+now build our models so just to speed
+
+things up
+
+and i don't particularly like watching
+
+people type in i know that some of you
+
+have mentioned
+
+or you do prefer that but i'm just going
+
+to go for the copy and paste method and
+
+just explain what we're doing so
+
+first of all we're going to create our
+
+main classes or our main tables that
+
+we're going to need
+
+for this quiz so like i said i was going
+
+to take you through the normalization
+
+process
+
+but i spent a couple of hours trying to
+
+to do that and then i realized well i
+
+just want to show you normalize
+
+i just want to show you foreign keys
+
+really so the normalization process
+
+would have taken us down a slightly
+
+different route in terms of the model
+
+set
+
+up here so we've got we're going to have
+
+four main
+
+tables so we're going to have the
+
+category table
+
+we're going to have a quiz table um and
+
+then we're going to have
+
+a a question table
+
+so we're going to hold all the questions
+
+in one table
+
+and then finally we also
+
+include the answer table so let's go
+
+ahead and do that
+
+okay so those are the main tables that
+
+we're going to be utilizing for this
+
+project
+
+or at least at the start of this project
+
+so by setting the models up in this way
+
+you can probably see that we're going to
+
+have many to one relationships here
+
+so we're going to have all one to many
+
+one category
+
+in many quizzes there's going to be one
+
+quiz
+
+many questions for that quiz and then in
+
+one question there might be
+
+many answers so what we got here are
+
+foreign keys
+
+linking back to the previous table so
+
+just let's go ahead and just add that in
+
+so
+
+we've got here a category field that's
+
+going to have a foreign key to
+
+the category table so we've added
+
+default option
+
+so by default when we add a new quiz
+
+it's going to have the category of
+
+whatever
+
+the first category we place in the
+
+categories table
+
+is and then you can see here on delete
+
+do nothing
+
+so what we don't want to happen here is
+
+that if we delete this quiz
+
+it also deletes the category so we just
+
+don't want that to happen so imagine we
+
+build a quiz
+
+we've got a category say django and then
+
+we build a quiz
+
+and then what we do is we assign that
+
+django
+
+quiz to the category django and then we
+
+delete that quiz
+
+and then what would happen maybe uh
+
+utilizing the default setting is that
+
+the category would also get deleted
+
+so we just simply don't want that to
+
+happen so really just as a default we're
+
+going to do nothing
+
+if a quiz is deleted so
+
+um that's not how we might want to
+
+finish this
+
+table but just for now that's going to
+
+be the case for all of these tables here
+
+so we've got the question so there's
+
+going to be
+
+one quiz and multiple questions so let's
+
+go ahead
+
+and just add in that foreign key
+
+so again i'm just going to cop and paste
+
+this in i've already
+
+written this out so there we go so same
+
+situation again so now we've got
+
+a many-to-one connection between
+
+the questions many questions one quiz or
+
+one quiz and many questions
+
+and then finally the answers so the same
+
+type of situation here
+
+we're going to use a foreign key again
+
+so this time we're going to just call
+
+this question
+
+and that's going to be then connected to
+
+the question table
+
+a foreign key so many to one so one
+
+question will have many
+
+answers so because we're using the
+
+django
+
+rm there's a a little bit of
+
+abstractness here
+
+in the way that what we can do is
+
+if we find information in the quiz
+
+because we've got that connection here
+
+this foreign key connection between
+
+question and quiz
+
+we could also with the quiz data work
+
+out what questions are attached to it
+
+because we've got this kind of
+
+connection here
+
+this foreign key that connects this
+
+model
+
+or this table to this table so django
+
+works in a way that we can collect data
+
+backwards and forwards from this kind of
+
+relationship here
+
+so if we were in questions we could find
+
+out what the
+
+quiz related data was that's connected
+
+to the information we wanted to find
+
+about the question and then similar if
+
+we created a quiz
+
+and we wanted to know all the questions
+
+because we've got this foreign key here
+
+although it's stated here and not in
+
+this model here
+
+it doesn't mean we can still find
+
+information
+
+about the question from the quiz and
+
+that's important to understand
+
+once we start looking at the serializers
+
+we'll be doing exactly that
+
+we'll be um collecting all the data
+
+about the quizzes
+
+and then be able to make through this
+
+connection find all the information
+
+about the questions
+
+as well so now we've got all our
+
+relationships in place
+
+uh let's just go ahead and fill this in
+
+with all the other information that
+
+we're going to need so the category all
+
+we're going to have in the category is
+
+just
+
+name for now um and then we're just
+
+going to return the string method here
+
+done the method uh just the name of the
+
+category so that's going to be the
+
+default string that's returned from
+
+for that table or that model
+
+so what you will find with data or how
+
+the data
+
+or this code is structured inside the
+
+models is that there is a
+
+or some people do follow a general kind
+
+of
+
+schema uh in terms of what data goes
+
+first inside of your
+
+model class and of course that then just
+
+nicely organizes it
+
+and standardized the way that you can
+
+read through the model
+
+so i'm just going to place some data
+
+here which typically is kind of out of
+
+order
+
+from those type of schemas or ways of
+
+working so we just add some class meta
+
+here so if you're not already familiar
+
+with this so we've got this verbose name
+
+um so we can kind of
+
+rename the table so our table might be
+
+called something like this
+
+might which might be really handy for
+
+when we're working with queries etc that
+
+might be really handy
+
+but when we actually want what we want
+
+to actually display
+
+in our software um that might be
+
+slightly different
+
+so or how we might want to refer to this
+
+model might be different so we can set
+
+the verbose name
+
+and also the plural name how we want to
+
+display in plural
+
+now this is a good example here of
+
+utilizing the plural name because quiz
+
+will normally just be pluralized by
+
+django like this with an s on
+
+so this way we can actually do this
+
+correctly and then there's lots of
+
+different other meta options
+
+available ordering is just one of these
+
+so we can set the ordering
+
+so that's just in class meta and let's
+
+move on to
+
+the next point so let's go ahead and now
+
+just
+
+add a let's
+
+add a title okay so
+
+um you'll notice already that you're
+
+starting to see some of these
+
+underscores everywhere so the whole
+
+point here
+
+is that our application might need to
+
+get translated
+
+so enabled or to order to kind of
+
+aid that translation we can identify
+
+what might need to be translated
+
+so that's really the short version of a
+
+longer story so you can see here that
+
+i've imported django utils translation
+
+import the get lazy so if you want to
+
+research this
+
+have a look up and get text lazy so this
+
+is a tutorial that i've been asked many
+
+times about um looking at
+
+how to do translations um it is
+
+something that i will
+
+definitely look at in the next couple of
+
+months so we're just
+
+uh importing that in as this underscore
+
+here so anytime you see an underscore
+
+before a name
+
+that's something that potentially might
+
+get translated
+
+so i've just added some other attributes
+
+here just to show so we've got the
+
+verbose name here
+
+um so you can see that we can also kind
+
+of make a different name or generate a
+
+different name for this
+
+particular field um utilizing the
+
+verbose name for example we've got the
+
+max length
+
+at 2 5 and we've also got
+
+the default option so have a look at
+
+those
+
+um it's worth understanding or maybe
+
+sometimes including
+
+some of those different items so default
+
+is
+
+what's going to be included in the field
+
+by default so we don't place anything in
+
+this field
+
+it's just going to say new quiz
+
+so we've got that now in place the title
+
+we've got uh category
+
+so what else we're going to need here
+
+let's just go for date created
+
+so like i said this is just going to be
+
+a skeleton set of
+
+um fields for you so we've got the um
+
+date created and here i'm using auto
+
+now add
+
+okay so there's two options here um
+
+if i remember there's auto now and
+
+there's auto now add so auto now
+
+is this an auto now add so the
+
+difference here
+
+is that when the model is initially
+
+created
+
+that's when this date is going to be
+
+automatically generated so automatically
+
+when it's added so when we do an
+
+update that won't get updated
+
+however if we set this to auto now
+
+that means every time we update the
+
+model
+
+it will then get updated so essentially
+
+what we're doing here then
+
+i guess is doing date created if we do
+
+date updated
+
+then that's where we're going to use the
+
+auto now instead of the auto
+
+now add okay
+
+so we've got that in place so that's all
+
+good
+
+and now we can go ahead and
+
+add in the string done method to return
+
+the default string for this table
+
+um so that's all in place now so that's
+
+what we're doing for the quiz table
+
+you can of course add your own fields if
+
+you want to so
+
+next thing i just wanted to show you an
+
+abstract base class
+
+so an abstract base class these are
+
+going to be useful
+
+when you want to put for example common
+
+information or the same information
+
+into multiple tables so here is an
+
+opportunity
+
+opportunity to use one so for example
+
+when we update a question we want to
+
+record that it's been updated
+
+when we update an answer we want to
+
+record that it's been updated
+
+so we can keep track of when the answer
+
+and question has been updated
+
+so let's go ahead and just create a
+
+new class here we're just going to call
+
+this
+
+update uh let's just call this update
+
+time
+
+or just maybe updated that probably do
+
+so here we're just extending from models
+
+again as we normally do
+
+and now we can populate this as we would
+
+do
+
+a normal table so we're going to just
+
+call this uh
+
+date updated so it's just going to be a
+
+time
+
+date uh time date time field sorry um
+
+so we've got the auto now true
+
+so that's going to mean that when we
+
+update the item it's going to
+
+automatically
+
+update the the date time field with that
+
+new timestamp so
+
+we can also set the class meta
+
+so we'll say abstract equals true so
+
+this is going to be an abstract class
+
+okay so now what we got and notice here
+
+it says update question let's just
+
+change this to
+
+updated so instead of now extending from
+
+models dot model we're now just
+
+extending from this abstract class here
+
+or this abstract model
+
+that we have here and we're just going
+
+to basically import this in
+
+to question and answer so it's just
+
+going to be automatically generated
+
+in that way so
+
+to confirm we don't actually have to
+
+reference this now within question and
+
+answer
+
+literally this is just going to be
+
+utilized when we actually create the
+
+model you'll see this
+
+that there will be an entry in question
+
+and there's an entry in
+
+answer okay so moving on to question
+
+this gives us a little bit of an
+
+opportunity to utilize some other tools
+
+so let's just set the class meta again
+
+again i'm just going to put this up the
+
+top just for now
+
+there we go so we've got the name the
+
+plural name the order
+
+for example and now we need to think
+
+about some scales
+
+uh because we what we want to do is make
+
+a select option
+
+so the question will probably have
+
+different scale of uh
+
+difficultness if that's difficulty sorry
+
+so let's go ahead and add a scale for
+
+that so typically this is what is
+
+found at the top of the class or the
+
+first item that's normally
+
+described at the top of the class so
+
+we've got this nice scale here
+
+and notice that what we're doing here is
+
+we're utilizing
+
+the facility before the translation tool
+
+so we've got fundamental beginner
+
+intermediate advance and expert
+
+because all these items here will
+
+potentially be seen
+
+by the user so potentially they need to
+
+be translated
+
+into their own languages etc now this
+
+type of format here
+
+behind the scenes fundamental is
+
+referenced as
+
+zero beginner one intermediate two three
+
+and four
+
+so we've got this kind of numbered
+
+scaled here behind the scenes and this
+
+is what the actual user
+
+is looking at so i prefer to work this
+
+way because it's
+
+probably easier uh and
+
+performance wise potentially to query
+
+numbers rather than these words here
+
+i say that very lightly so we've got
+
+this scale here you can probably see how
+
+that's going to be working now
+
+i also want a type so in addition to
+
+scale i want to know what type of
+
+question it might be because
+
+later on we might extend this into
+
+different types of questions so multiple
+
+choices
+
+um gapped choices uh
+
+other types of questioning that you
+
+might want to to utilize
+
+true or false for example in your quiz
+
+so i've also got a drop down for that
+
+too and that's really going to be really
+
+handy to sort out some logic
+
+later on so we've got the
+
+foreign key in place so i like to
+
+normally just utilize that first at the
+
+top so i can see and i'd have to kind of
+
+drill down to the rest of the fields to
+
+find any foreign keys
+
+so any kind of dependencies fields will
+
+be at the top of my model
+
+so we're going to just add some more
+
+here now i'm just going to kind of
+
+bulk fill this in save a bit of time
+
+so here we've got technique um and you
+
+can see here that's going to
+
+that's referring to the
+
+the choices so here we've got uh
+
+choices and we selected type so these
+
+are
+
+the choices right here and we've got the
+
+title the difficulty
+
+so this comes from the drop down option
+
+scale
+
+so these are all the options that are
+
+available for scale so that's going to
+
+provide a nice little drop down
+
+and we've got date created and then is
+
+active
+
+so we want to be able to kind of turn on
+
+and off the questions so
+
+to make them available or not so we'll
+
+finish that off with our dunder
+
+method to return the default string for
+
+this
+
+model and there we go so we have our
+
+question table now
+
+so that just leaves our answer so here
+
+we're just going to
+
+same type of process let's just add some
+
+some meta in and then we've got our
+
+foreign key
+
+and this time probably what we're going
+
+to do here
+
+is just add two things the answer
+
+text and then whether the question is
+
+right or not
+
+now that's a little bit contentious is
+
+right
+
+here um so but essentially if you can
+
+visualize this
+
+this table is going to have the question
+
+id and then the question
+
+and then that's also going to
+
+that's obviously connected to the
+
+question so question one
+
+whatever and then the answer will there
+
+be say multiple
+
+answers here recorded via the id of the
+
+question
+
+and then one of those that are connected
+
+to that question will be flagged as is
+
+right
+
+that finishes off our models for this
+
+project so
+
+only one thing i didn't mention that i
+
+was going to talk about was
+
+normalization
+
+so if you do happen to
+
+want to learn a little bit more about
+
+databases and formulating
+
+database schemas and tables etc it's
+
+well worth having a read through
+
+normalization
+
+it's going to ultimately make
+
+maintaining and changing your database
+
+more effective
+
+and has effects on performance or can
+
+improve performance and efficiency of
+
+your database
+
+and also another area to look at is
+
+database
+
+anomalies so the idea of structuring a
+
+database
+
+is to ensure that you protect yourself
+
+against some common database anomalies
+
+so for example update anomaly
+
+next up we have admin so i'm just going
+
+to take you through a small activity
+
+where we're going to utilize inline
+
+model admin objects
+
+so as of making this tutorial this is
+
+something i've not mentioned yet
+
+in this channel so this is a great
+
+scenario
+
+in order to actually apply or to
+
+introduce this topic
+
+to you and this is essentially going to
+
+allow us to edit models on the same page
+
+as the parent model so that's a
+
+description from django so essentially
+
+what we can do here
+
+is we can take two models that are
+
+connected in this case we've got
+
+the many two one connections
+
+and the foreign keys we can take these
+
+two models
+
+and we can put them on the same form or
+
+the same page
+
+and we can then update both of those
+
+models at the same time
+
+so if you haven't already done so now's
+
+a good time to migrate the data
+
+um i can't remember if i've done that
+
+so make migrations okay so
+
+then go ahead and just migrate
+
+and then if you haven't already got a
+
+super user just create a new super user
+
+i'm just going to call mine admin and
+
+admin
+
+there we go so let's just start the
+
+server
+
+back in the admin let's go ahead and
+
+just delete what we had previously if
+
+you had anything in there
+
+and i'm just going to now add a
+
+registration here for
+
+the category so i've created this new
+
+class here called cat adam in
+
+and i'm listing just the name in this
+
+case it looks like
+
+so let's just go ahead and have a look
+
+and see what that looks like
+
+okay so i've registered that so there's
+
+no categories there
+
+at the moment and then
+
+let's go ahead now and register a new
+
+table so this time
+
+it's going to be quizzes so here you can
+
+see that i'm just going to display the
+
+id
+
+and title in the list when we looks like
+
+when we create
+
+a new quiz so that's what's going to be
+
+displayed in the listing
+
+and then underneath here we've got
+
+answer inline model that's the name of
+
+the class
+
+and then here we're extending from admin
+
+and we're going to use the tabula
+
+inline so if you take a look through the
+
+django documentation you can see that
+
+there's two subclasses of the inline
+
+model admin
+
+their tabular inline and stacked inline
+
+of course we're going to be utilizing
+
+tabular inline here and like it says
+
+here the difference between them is
+
+merely just the template
+
+used to render them so
+
+let's just uh go ahead and use the
+
+tablet inline as i described
+
+earlier this is going to essentially
+
+allow us to
+
+take data for or use two models and put
+
+them on the same page
+
+and that's going to come a little bit
+
+that's going to be made a little bit
+
+clearer as to why we're using that in a
+
+second
+
+so let's just go back to our code
+
+so you can see see here that we've
+
+registered the quizzes
+
+we've got some listing the display of
+
+the quiz so when we created
+
+a quiz it should list just the id
+
+and the title so let's just go ahead and
+
+do that so
+
+i've added it already and i'm gonna just
+
+refresh and you're gonna just see the id
+
+and the quiz title there we go so i've
+
+added a new quiz and some new categories
+
+from here already so what we now need to
+
+do
+
+is just go back so now what we've done
+
+here you can see that
+
+we've created a a tablet inline okay so
+
+we've selected the model
+
+that we want to use the answers so it
+
+looks as though here what we're going to
+
+do
+
+is we're going to put the answers
+
+on the same page as something else in
+
+this case it's going to be the question
+
+because what we want to do is when we
+
+make a new question is we might as well
+
+add the answers while we're there
+
+there's no point then coming out going
+
+back into the other table
+
+and then making the answers we might as
+
+well do it all on the same page
+
+so you can see i've selected the fields
+
+that we want to use
+
+and there we go so we need to kind of
+
+define this first
+
+before we go ahead and use it so that's
+
+why we've done that so
+
+um let's just go back
+
+to here and now we've got the
+
+um the question so we're just going to
+
+register the question so we've got some
+
+fields here that we're going to register
+
+so we're only going to see the title and
+
+quiz
+
+field um when we actually build a
+
+a new question we're only going to see
+
+the title and the quiz
+
+and this is what we're going to list
+
+when we're listing all the quizzes
+
+sorry all the questions sorry and this
+
+time
+
+when we build a new question we're also
+
+going to put in line the answer
+
+inline model and that's the name of the
+
+class that we created earlier that's
+
+connected to the
+
+answer so essentially what we're doing
+
+is we're saying that
+
+on the question page we're going to use
+
+an
+
+inline and we're also going to insert
+
+the answers and that's just been
+
+extracted here
+
+included here by this class so the last
+
+thing that we'll do
+
+is we'll just add the the question so we
+
+can just access all the questions
+
+let's just register that and there we go
+
+so that's going to be
+
+our uh admin pi file so let's go ahead
+
+and have a look now at this
+
+in action so like i said i've already
+
+had some categories
+
+and and i think a quiz yep so we've got
+
+a new quiz here
+
+so let's go into questions so we add a
+
+new question and here we go so what
+
+you're seeing here
+
+is the model uh for the question and
+
+then the model
+
+for the answers so we can add
+
+data all at the same time so
+
+let's call this question one this is
+
+from the new quiz
+
+that we've just made so the answer one
+
+answer to
+
+an answer three and here i can define if
+
+it's right or not and i've got the
+
+option
+
+to delete so this is just something that
+
+the admin page has automatically
+
+generated
+
+now behind the scenes what's going to
+
+happen is that when we save this it's
+
+going to save the question
+
+and also the answers now remember that
+
+we've got a foreign key between the
+
+answers and the questions so there is a
+
+link between them
+
+so django or the back end is able to
+
+work that out
+
+save it appropriately and there we go
+
+so if i now go into the cool
+
+answers uh you can see we've got answers
+
+here and they're connected to the
+
+question
+
+so our final step really is to now
+
+create some views
+
+and some serializers so that we can pass
+
+the data over to the front end
+
+now what we're going to do here is in
+
+this example is just create
+
+three views or three endpoints for our
+
+api system
+
+one to gather or to yeah collect all the
+
+data about all the quizzes so if we want
+
+to find
+
+out what quizzes were available we're
+
+going to use that endpoint
+
+then we're going to create a random
+
+question endpoint so we can select a
+
+random question from a topic
+
+and then finally we do that a question
+
+from a particular quiz
+
+so you'd assume that the user would on
+
+the front end pick a quiz and then be
+
+presented with the questions
+
+and obviously all the answers and
+
+they'll be able to click through that
+
+one by one
+
+and answer all the questions
+
+i suppose it's worth noting here there's
+
+two strategies here for the front end
+
+so do you allow the front end to access
+
+a question at a time
+
+so for example your api would request
+
+question one from the system that would
+
+be returned
+
+and then question two and three and four
+
+or do you choose to
+
+uh basically just find all the questions
+
+related to that quiz take that and put
+
+it all onto the front end and store it
+
+on the front end
+
+and just kind of iterate through all of
+
+those questions
+
+i guess that's a decision that you need
+
+to make now here we're just really
+
+talking about text probably a very small
+
+amount of text or data
+
+so it's probably worthwhile actually
+
+collecting
+
+all the quiz questions and answers and
+
+then saving that in
+
+state on the front end that's probably a
+
+better answer because once you start
+
+scaling this up
+
+you imagine if you've got a million
+
+people uh
+
+trying to do a quiz that's a million
+
+requests
+
+every single question rather than being
+
+a million requests
+
+per every quits so you're just cutting
+
+down on the
+
+amount of bandwidth and potentially a
+
+lot of cost savings there to be made
+
+but that's obviously a choice that you
+
+can make
+
+so before we start building our views uh
+
+let's just go ahead
+
+and create some urls so uh
+
+in the core we're going to connect the
+
+urls to our quiz
+
+so here you can see what we've done is
+
+we've included
+
+we've added include so we can use the
+
+include and then we're just going to
+
+include the quiz url so we're going to
+
+name
+
+space here and then you can see that the
+
+path is going to be quiz so if we want
+
+to access our api
+
+we're going to use the quiz in the url
+
+to extend the the default path and
+
+then let's go over now to our quiz
+
+in the urls so now we've added the app
+
+name
+
+and because we've provided a namespace
+
+we've imported from the view the quiz
+
+that's going to be our first view that
+
+doesn't exist yet we'll do that in a
+
+second
+
+and we're going to be using class based
+
+views so here we've created
+
+a simple url pattern of the default path
+
+so if we just type in quiz after the
+
+default
+
+url that's going to take us to this path
+
+and here we're going to then collect or
+
+perform what's in the view called quiz
+
+so we're giving it a simple name and i
+
+think that's all we need to do
+
+there okay so let's go over to the views
+
+so nothing currently in the view so
+
+let's go ahead and
+
+do something here so first of all we're
+
+going to start off with
+
+creating a simple kind of a list
+
+of all the quizzes so we are going to be
+
+using class-based views
+
+so let's bring in the rest framework
+
+tools in this case we're going to bring
+
+in the generics so
+
+in the first instance here we're going
+
+to use the list api view
+
+um so let's bring that in and
+
+then what we're going to need after that
+
+is
+
+probably a class i guess so let's go
+
+ahead and
+
+build a new class for this so let's just
+
+call this quiz
+
+and then we're going to extend from
+
+generics and we're going to be utilizing
+
+the list view api so we don't need to
+
+create anything
+
+or anything crazy like that we're just
+
+literally going to
+
+list items so in this case all we need
+
+here
+
+is a serializer class so we're going to
+
+need to make that so
+
+we'll call that quiz uh serializer
+
+and then we're going to need a quick a
+
+query set
+
+so we're going to say we want all the
+
+data
+
+from the table quizzes
+
+okay so that just collects all the data
+
+so obviously we're going to need to
+
+bring
+
+that in so from
+
+from models
+
+import and this time it's going to be
+
+quizzes okay
+
+so we brought in the model that we're
+
+going to need so that's pretty much it
+
+really so we're just collecting all the
+
+quizzes from the database putting in the
+
+query set and because we're utilizing
+
+this list api there's a lot of
+
+abstraction here but behind the scenes
+
+that's going to do everything for us in
+
+terms of sending it over to the front
+
+end
+
+so now you might imagine we're going to
+
+need a serializer
+
+so here we called our serializer for
+
+this
+
+data quiz serializer so let's bring that
+
+in from our serializers which we need to
+
+build
+
+so i've made a new file here called
+
+serializers
+
+okay so what i've got here from the rest
+
+framework i've imported serializers
+
+and then i've gone ahead and i'm going
+
+to need the model so i've imported the
+
+model
+
+that i'm going to need so i'll create a
+
+new class i've called that quiz
+
+serializer that matches up with
+
+everything
+
+in the view and now i'm just extended
+
+from serializers and we're using model
+
+serializer
+
+so what's happening here if you're not
+
+familiar with serializers
+
+is in the view we collect all the data
+
+from a database
+
+now the thing is here is that if we
+
+collected this data and sent it across
+
+to the front end via the api the data
+
+wouldn't be formatted
+
+in a way that could be util utilized by
+
+the front end because typically we're
+
+going to be utilizing json on the front
+
+end
+
+so we need to format the data in a way
+
+that jason can oh that jay
+
+javascript sorry can handle so
+
+we will utilize the serializer
+
+serializer is basically going to
+
+um take that data and then
+
+make it or format it in a way that can
+
+be utilized in the front end
+
+so let's go back to serializer and you
+
+can see what we've done here
+
+is in the serializer we've created a
+
+class meta we've selected the model we
+
+want to use quizzes
+
+and the data that we want to collect so
+
+this case we're just going to collect
+
+the title
+
+and then push that over to the front end
+
+so before we can see this in action you
+
+can see that maybe there's a
+
+an issue here in the view so we just
+
+remove that comma
+
+uh looks like it might be okay now so
+
+let's go back into the front end
+
+now what i do have is so look quizzes
+
+we've got one quiz so
+
+we're only going to see one quiz now
+
+remember the end point
+
+was uh our what
+
+here so our endpoint was just a quiz
+
+and there we go so one item is being
+
+displayed because we have one item
+
+in the database i think that's pretty
+
+simple so let's just open up a a new tab
+
+here
+
+for the admin so let's just go ahead and
+
+just test that so if i create a new quiz
+
+of course new quiz 2 press i'll make it
+
+into a react
+
+quiz press save go back to the front end
+
+you can now see we've got two quizzes so
+
+clearly that end point is working for us
+
+and that's returning all the
+
+the quizzes are available in the
+
+database
+
+so let's have a look at creating some
+
+sort of
+
+random question from a particular
+
+topic so we're going to utilize i think
+
+api view for this this might be a good
+
+example of api view so
+
+whereas we've got these list api views
+
+from the generics
+
+that's going to provide a lot of
+
+abstraction here it does a lot for us
+
+you can see all we need to do is define
+
+the query set in the serializer
+
+it just works so with api view we can
+
+be a little bit more descriptive and we
+
+can provide more information and be in a
+
+little bit more control
+
+as to what's happening so let's go ahead
+
+now and just create
+
+our our random for this so this time
+
+we're going to use
+
+like i said the api view so
+
+um let's just call this a random quiz
+
+or random question and
+
+then this is going to be utilizing the
+
+api view
+
+so when is this going to be utilized so
+
+here we need to define
+
+the request type so when for example we
+
+send a request
+
+to this endpoint that we're building
+
+here and that's going to be a get
+
+request
+
+so we're going to need to perform an
+
+action based upon
+
+our get request so we'd call this a this
+
+new function get say
+
+and then let's take in cell from request
+
+has taken all that information into this
+
+function so we can utilize it within
+
+this function
+
+um we can define
+
+the format is none and then we can also
+
+take in the the quarks
+
+the additional arguments or additional
+
+data that we might be sending in and we
+
+will be doing that
+
+and this is why we're doing it this way
+
+just to show you this
+
+so if you're not too sure what args and
+
+quads are there is a good tutorial in
+
+this
+
+channel which i'll explain and give you
+
+a brief overview
+
+quite in-depth overview of what these
+
+are and how they potentially work
+
+in django so talking a little bit about
+
+selecting a random item from the
+
+database
+
+so there are many different ways we can
+
+do this
+
+we could for example and where possible
+
+you always want to try and
+
+put as much in the model as possible and
+
+keep the view
+
+light as possible so there's a lot of
+
+things we can put in this model
+
+so for example if we knew that we wanted
+
+a particular
+
+in this case random we could set out
+
+maybe a custom manager for this
+
+or we could set our custom function to
+
+uh
+
+generate a a random item from a database
+
+now this case we're not going to do that
+
+i'm just going to keep it into view
+
+and just keep it nice and tidy really
+
+i'm not trying to
+
+make this into a feature selecting
+
+random
+
+items from a database so we're going to
+
+keep it nice and simple
+
+and we're going to use order by i'm
+
+going to show you how that works in a
+
+second so we could have
+
+like i said we could have done this in
+
+many ways but this seems not the easiest
+
+way to do it so
+
+we're going to collect a random question
+
+from the question
+
+let's bring in from the models uh
+
+question
+
+oh so
+
+from question so that's where all our
+
+questions are stored
+
+we're going to use a default manager and
+
+then
+
+filter so we're going to make a simple
+
+filter
+
+okay so like i said we want to select
+
+a specific question from a topic
+
+that's defined so the user will define
+
+the topic
+
+and that will then be um indicated in
+
+the url
+
+and what will happen is that that word
+
+that topic that's been selected
+
+we'll go across into the quarks here and
+
+we're going to utilize or extract that
+
+out and we're going to utilize it in
+
+this filter so we can select the
+
+particular
+
+so in this case the topic is basically
+
+going to be the the quiz name
+
+or the quiz title okay so the quiz title
+
+is going to be called django
+
+or it's going to be called uh react for
+
+example so
+
+this is just first for demonstration
+
+purposes so
+
+what we're going to say is that if we
+
+look at our model here
+
+in our in our
+
+question if we go down to the question
+
+here we've got a foreign key
+
+and that foreign key is connected to uh
+
+quizzes okay so our quiz has a name
+
+so let's draw this back up to quiz in
+
+quizzes we have
+
+title so what we're going to do is going
+
+to filter based upon the title the quiz
+
+that's what we're going to do sorry if
+
+that was confusing so because we've got
+
+that connection between
+
+the quiz
+
+questions and the quizzes we can access
+
+the quizzes title so we can run a filter
+
+on that so
+
+let's go back in here and so what we're
+
+going to do is say quiz
+
+and then use a double underscore so we
+
+can access the
+
+the quiz so we're working backwards from
+
+the question
+
+we're now inside of the question model
+
+say and now we've gone to the quiz field
+
+which is a foreign key
+
+and we're using the doubles here
+
+underscores to
+
+say we want to move backwards now into
+
+the quiz table
+
+and we want to select in the quiz table
+
+the title
+
+so that's going to equal our quarks
+
+so remember we're going to send across
+
+from the url
+
+for example django and now we're going
+
+to filter and get a question
+
+from based upon the quiz title being
+
+django so any question
+
+which if you roll back to the quiz
+
+model is inside of the django quiz
+
+so this is going to be we're just going
+
+to call this
+
+uh topic so that's what we're going to
+
+name
+
+um the quarks so any data inside of
+
+topic
+
+and now we're going to order
+
+so this is going to provide the this
+
+kind of random element
+
+so we're going to collect all the
+
+questions from the in
+
+say django or the react quiz and then
+
+we're just going to order them
+
+and this is going to basically uh
+
+make a random order so we say order by
+
+and then we're going to utilize the
+
+question mark and that's going to make a
+
+random
+
+order and of course we only want to
+
+select one of these items because we
+
+only want one question at a time
+
+so let's go ahead and just i'll just
+
+kind of slice it really and just select
+
+one of those items and there we go so
+
+that will create a very simple
+
+uh random question
+
+so in terms of this quiz it's effective
+
+and it's
+
+uh it's not going to be too costly here
+
+because we're only running one query
+
+and there isn't going to be too many
+
+questions that we need to run through
+
+so that really isn't going to be a
+
+problem in this case
+
+so let's just uh go to the next line
+
+here so
+
+now we're going to need a serializer of
+
+course so let's bring in our serializer
+
+class
+
+so we've got a serializer we're going to
+
+call that
+
+a random yeah let's call that random
+
+question
+
+uh serializer so let's just connect to
+
+that and then we what we need to do
+
+now is we need to pass in the data
+
+from that we've collected from the
+
+database so that's in the
+
+variable here question
+
+and then we're going to say many there
+
+are many
+
+so many equals uh true
+
+and then we're just going to return that
+
+so return we're going to use
+
+the response
+
+which we need to bring in to the project
+
+and then
+
+serializer.data we're going to send the
+
+data back
+
+so there we go so let's just bring in
+
+the
+
+response in from the rest framework
+
+okay it's pretty rainy outside okay so
+
+there we go that's um that set up so now
+
+we need to go into the serializer and
+
+sort that out
+
+okay so let's bring in the question
+
+let's do that first so bring in that
+
+model and now
+
+make a new class uh we need to call that
+
+a random
+
+random question serializer and let's
+
+just bring it in
+
+while we're here in the view so let's
+
+just give it as a model so
+
+in the serializer we're going to call
+
+this random question
+
+serializer and like before we're just
+
+going to extend from serializer
+
+there we go so let's do something here
+
+let's just go ahead and just create some
+
+class meta very quickly
+
+there we go so we obviously want to use
+
+the model question
+
+and we want to return the title and the
+
+answer
+
+okay so before we do anything special
+
+here
+
+let's just go ahead and create a new url
+
+for this
+
+so we're in quiz in our urls so let's
+
+just uh build
+
+a new url for this now what we're going
+
+to need to do here is we want to take in
+
+a parameter
+
+because what we want to do is we want to
+
+take in the
+
+parameter of the actual
+
+topic or the actual name of the quiz
+
+that we want to find a random question
+
+from
+
+so here we're going to set up a a
+
+returner string
+
+and we're going to remember call that
+
+topic so that's going to be the
+
+um like a variable really that we're
+
+sending across a
+
+and that's going to be referenced by
+
+topic so
+
+that's in place and then of course we
+
+now just need to
+
+connect that to our
+
+our classic
+
+so that was called random question so
+
+let's just bring that in first
+
+into our urls and then we can utilize it
+
+right
+
+here and then dot as view
+
+okay and then we can give that a name of
+
+course
+
+so let's just call that a random
+
+okay so now we've got our url in place
+
+let's just see this working so remember
+
+we need to
+
+say quiz r for random and then we need
+
+to
+
+the name of our topic so remember this
+
+topic name is going to be utilized and
+
+passed in
+
+and we're going to be that's going to be
+
+stored in the class quarks
+
+and then you can see what we're doing
+
+we're going into the quarks and we're
+
+looking for topic
+
+and this filter which is built wrong
+
+that was a good spot that's going to
+
+filter based upon the quiz title being
+
+whatever the topic name is from the url
+
+okay so let's get back in to our quiz
+
+here
+
+so we need r for random and then say
+
+django
+
+so at the moment we are missing one
+
+required positional argument
+
+so let's have a look to see what the
+
+problem is here
+
+so just fixing that little problem
+
+format equals none
+
+and also just making sure that the
+
+filter was called filter spelled
+
+correctly
+
+so once we've done that we can now go
+
+back into our view
+
+and you can see that our random question
+
+generates no data at all at the moment
+
+so obviously we don't actually have a
+
+quiz called
+
+django so let's go ahead and actually
+
+build
+
+this new quiz it needs to be called
+
+django
+
+and let's press save it's going to be in
+
+the category of django
+
+um and we can just quickly then make
+
+some few
+
+a few questions for this let's call this
+
+uh
+
+q1 of the django quiz
+
+and a3 okay so we've got a question
+
+and we've got some answers so let's now
+
+go now
+
+go back and refresh and you can now see
+
+what's happening here
+
+is that from django we've actually
+
+collected
+
+one question and that's the question
+
+we've just made
+
+so uh notice as well we've got an
+
+answer that seems pretty cool so we've
+
+now got a question
+
+and an answer so let's go ahead and just
+
+uh build another question just to see if
+
+this is working properly
+
+so inside of my questions
+
+let's go and build a new question so
+
+let's call this question two and this is
+
+going to be for the django
+
+uh so we've got a1 a2 and a3 again
+
+so let's go back to here and refresh and
+
+you can see that
+
+if i keep refreshing i get a random
+
+question being generated
+
+so you can see what's actually being
+
+returned isn't very useful because
+
+the answer is just returning four five
+
+and six now i'm pretty amazed that this
+
+is working actual zack i would
+
+have guessed that or would have said
+
+that this wouldn't work because
+
+all i've done is randomly uh typed in
+
+title and answer here into the
+
+serializer now answer's not actually
+
+referring to anything
+
+and i can see no so
+
+um somehow django is working out um
+
+what the answers are obviously utilizing
+
+the foreign key but there isn't actually
+
+a reference to answer here because our
+
+answers in the model
+
+if i go back to the model uh are called
+
+answer text so the only thing that's
+
+called answer is actually the table but
+
+that's got
+
+a capital so that's a little bit strange
+
+but uh
+
+nevertheless um you can see that isn't
+
+what we need
+
+so we need to think about collecting
+
+more uh
+
+data that is more appropriate to sending
+
+across to the front end
+
+so here we introduce serializer
+
+relations
+
+so this is going to be a way
+
+of collecting or utilizing
+
+relational data within our
+
+models so from our serializer we can
+
+collect utilizing our serializer
+
+relations
+
+as long as there's a relationship
+
+between the the two tables
+
+we can collect information from it
+
+potentially
+
+so let's have a look at some of the
+
+options we've got the string related
+
+field
+
+so it can be used to represent the
+
+target of the relationship
+
+using its string dunder method right so
+
+let's just utilize this first so
+
+let's go back and into our serializer
+
+let's go ahead and create
+
+an answer so the answer equals
+
+serializers uh string related field
+
+uh many equals true so we're going to
+
+use the light of the string related
+
+field so we're going to serialize that
+
+put into answer and then that's now
+
+connected here
+
+so that should output that information
+
+now what's happening here it says string
+
+related field so let's go back into the
+
+model
+
+now down here in our answer we've got we
+
+don't have
+
+the dunder method so let's just put in
+
+the dunder method here
+
+and let's utilize the answer text
+
+so we're going to return default the
+
+answer text from our answer
+
+table here or our answer model so let's
+
+just give that a go and see what now
+
+gets
+
+returned
+
+and there we go so we've got a1 a2 a3 so
+
+it's utilizing that foreign key to work
+
+backwards and then to actually find the
+
+answers so we actually have the answered
+
+text here
+
+now that's not always going to be um
+
+something you want to do because
+
+yourself your
+
+your dunder string method here might be
+
+completely different so let's just show
+
+that that
+
+is working now this is going to cause an
+
+error you would imagine
+
+because it's not going to be a string
+
+yep okay so it will only return
+
+non-string
+
+only return string method so let's go
+
+back here
+
+and obviously the question that should
+
+just be an id
+
+so let's go for that
+
+okay so that's not gonna work either um
+
+i was hoping to show you something else
+
+but uh clearly what's happening
+
+uh take from me what's happening is it's
+
+utilizing this uh done the string method
+
+here and returning what the default
+
+string
+
+is returning in this case it's the
+
+answer text
+
+and that's where we're receiving the
+
+answer text here
+
+so hopefully you get the idea here so
+
+you can work through this now
+
+you've got primary key related fields
+
+you can collect hyperlink related fields
+
+that's going to be uta
+
+useful to return hyperlinks so if we had
+
+a slug
+
+for example in the um the quiz table if
+
+we utilize this slug
+
+we could return back the url and that
+
+would then make a link
+
+to the actual quiz from the
+
+um from the quiz link so for example we
+
+would go
+
+on our front end to the page which shows
+
+all the the quizzes
+
+and then we would also send back the the
+
+url
+
+for that quiz so that when we click on
+
+that quiz we can set it up and utilize
+
+that url
+
+to then actually go to the quiz and
+
+start the quiz
+
+obviously this link here would be
+
+appropriate so it'd be captured within
+
+our api system
+
+and it would actually be an end point to
+
+the start of the quiz
+
+so just looking through this we've got
+
+the slug related field
+
+it's worth having a look at and the
+
+hyperlink identity field so
+
+it all these the same type of principles
+
+just need to read through
+
+um hopefully you can see what's
+
+happening now with those
+
+um so those are available for you to
+
+utilize
+
+so the only thing that really might need
+
+an explanation or an example is the
+
+custom
+
+relational field so what we can do here
+
+is we can
+
+well we can do this for example
+
+so let's just go back into our
+
+serializer
+
+and let's just now make a new serializer
+
+for the answers so um
+
+this is going to be above the uh random
+
+so we want to bring this in first so
+
+here we're going to create a new
+
+serializer called answer serializer
+
+we're going to use the answer model so
+
+we need to bring that in
+
+and basically that's going to collect
+
+all the information from that model
+
+in this case the id answer text and is
+
+right
+
+so that's the information that we
+
+probably want to pass over about the
+
+question to the front end right
+
+so what we need to do now is well just
+
+uh
+
+just link to it really and that's pretty
+
+much it so let's go ahead and
+
+now store that there so we link to it
+
+there's some properties here which you
+
+can
+
+have a look uh on the website what they
+
+mean
+
+and there we go so that's hopefully now
+
+all this information here will now be
+
+brought into this variable
+
+and serialized ready to put into our
+
+model and then this will then be shipped
+
+across to the front end
+
+so that should be much more functional
+
+information
+
+for our front end so let's go back and
+
+refresh
+
+and there we go so that's much more
+
+effective now this has been sent to the
+
+front end
+
+you've got the actual title of the
+
+question that's the actual question
+
+a text you've got the answers so you've
+
+got an id
+
+and an answer text and whether it's
+
+right or wrong whether it's true or
+
+false
+
+and there we go so that seems like a a
+
+good way of working if i keep refreshing
+
+you can see that it's going to collect
+
+different questions within that
+
+particular quiz there we go so a random
+
+quiz selector
+
+so that just leaves our last view to
+
+build
+
+and that's collecting all of the quiz
+
+questions from a particular quiz so that
+
+should be pretty simple now because we
+
+can just re-utilize our random question
+
+here
+
+so i've copied and pasted called the
+
+class uh quiz question now
+
+and this is going to be a get request
+
+again we're going to take in some quarks
+
+so here it's not going to be random
+
+anymore but we are still going to take
+
+in all
+
+or gather all the questions from
+
+the particular title so from the django
+
+um quiz or from the react quiz or
+
+whatever
+
+so we just basically don't need the end
+
+part here where we order the items
+
+um and then we're going to create a new
+
+serializer
+
+let's just call that quest question
+
+serializer
+
+um yep let's just call that question
+
+serializer
+
+and that's going to take in question
+
+here again
+
+and then we're going to send out a
+
+response so that pretty much seems
+
+all that we're going to need there so
+
+let's go into our urls
+
+so let's just build a new path or an
+
+endpoint for this
+
+so this path unless again just let's
+
+just copy this
+
+um in this case there's not going to be
+
+a random it's just going to be
+
+a selected quiz so i'm just going to use
+
+q
+
+here and you can change that path you
+
+want so we're going to take in topic
+
+again
+
+and now this time it's going to be
+
+called
+
+i think it was quiz question we named it
+
+yep
+
+okay so obviously we need to bring that
+
+into the urls
+
+there we go and let's just call that a
+
+quiz
+
+[Music]
+
+questions
+
+there we go and now that's all in place
+
+so now what we need to do is go over to
+
+the serializers
+
+so we called this serializer question
+
+serializer so we need to bring that in
+
+to the view
+
+first and then go over to serializer
+
+let's just create a new class here
+
+we're going to call that question
+
+serializer as per normal and then we're
+
+just going to
+
+import again our serializer
+
+model serializer and so at this point
+
+we're literally just copying and pasting
+
+what we previously done we could
+
+probably almost use this serialize apart
+
+from one item
+
+but you want might want to change and so
+
+if we put this in here
+
+let's just go back to the views just to
+
+confirm what we've got so we've
+
+literally got the same
+
+as the random question without the
+
+randomness
+
+of ordering and that's going to return
+
+all of the questions
+
+and then in our serializer we're doing
+
+exactly the same thing again
+
+we're going to collect all the answers
+
+and we're going to use the model
+
+question to get all the questions and
+
+then all related answers
+
+so let's just take a look at what that
+
+looks like
+
+so here we are you can see that we're
+
+collecting the title
+
+of all the questions and all the answer
+
+data
+
+obviously though if there was more data
+
+that would would have more data
+
+obviously sorry um so we've only got two
+
+questions
+
+inside of our quiz at the moment so
+
+that's why we're returning only two
+
+items
+
+so obviously one thing we're missing
+
+here is the title
+
+so the actual we want to pass across to
+
+the front end the actual title of this
+
+quiz
+
+so again we can just i'll just stitch
+
+this together right because
+
+we've got the information up here so
+
+let's go ahead
+
+and just uh copy this
+
+that's the wrong one uh let's go ahead
+
+at the bottom here our quiz serializer
+
+and we'll just copy this down we call
+
+this uh quiz
+
+how about that and then now we want to
+
+use this serializer here
+
+so the quiz serializer is going to
+
+collect the title of the quiz
+
+now because there is a relationship
+
+between the question
+
+uh in the model and the um quizzes
+
+table it means we can access that
+
+information
+
+so let's just change here to the quiz
+
+serializer
+
+and then of course we're not returning
+
+more than one item so
+
+it's not iterable at all so we many
+
+equals true is false
+
+so we will take that out for now and
+
+there we go
+
+so what we have now if we return back
+
+and we refresh is a broken
+
+serializer okay let's just go back here
+
+um
+
+what's missing here uh quiz quiz
+
+okay so actually let's bring it in
+
+because we haven't actually brought it
+
+in yet so
+
+let's put it at the front here so that's
+
+going to return that
+
+um is that going to fix it i didn't read
+
+that
+
+yeah okay so there we go so now we have
+
+the quiz title
+
+and all the quiz questions and it is
+
+returning the quiz title
+
+on on each question um but that's okay
+
+for now
+
+and that isn't too much of a an issue
+
+so yeah there we go so we now have all
+
+the data that's kind of valid we could
+
+definitely utilize this now
+
+and send it across to the front end and
+
+build a
+
+a quiz so i do hope that's given you
+
+some insight
+
+into working with foreign keys and
+
+handling relational data with inside
+
+your serializers
+
+to kind of expand the data that's
+
+returned
+
+to the front end in addition to that
+
+hopefully you've learned a little bit
+
+more about the admin
+
+and how you can use multiple models on
+
+the same page or
+
+within the same form set hopefully that
+
+was useful too
+
+so we do have a functional quiz api now
+
+obviously there's no security here
+
+there's lots of more things that we
+
+could add
+
+obviously to this hopefully this is kind
+
+of a baseline to help you
+
+move your knowledge forward and start to
+
+utilize
+
+data and to start to kind of put data
+
+together
+
+to send across uh to the front end
+
+so naturally the next step in this
+
+series would be to create the front end
+
+to handle all that data and actually and
+
+actually create some sort of
+
+uh usable quiz application
+
+so if you are enjoying the tutorials and
+
+you want to support the channel further
+
+then please join
+
+our community our membership community
+
+if you go to the home page select
+
+join uh you can join as a
+
+member to our channel and support our
+
+channel further
+
+okay so thank you very much and
+
+hopefully i'll see you in the next
+
+tutorial
+
